@@ -4,6 +4,7 @@
 ## 1. Overview
 
 **`EAT.py`** is a Python-based network sniffer leveraging **Scapy**. It can intercept TCP packets in real time and optionally decode payloads as **ASCII** or **EBCDIC** (commonly used on mainframes, e.g., 3270 terminals), or capture **TLS (SSL) traffic** on port 443. In the case of TLS, the data is typically encrypted; one can optionally perform a man-in-the-middle (MITM) attack (in an **ethical** or **authorized** penetration test scenario) to decrypt that data if you have the necessary private key or session secrets.
+NOTE: - PLEASE SEE THE PDF FILE FOR THE LATEST ADDITIONAL FEATURES.
 
 ### Key Features
 
